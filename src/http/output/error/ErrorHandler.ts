@@ -1,9 +1,11 @@
+import type { HttpRequest } from '../../../server/HttpRequest';
 import { AsyncHandler } from '../../../util/handlers/AsyncHandler';
 import type { RepresentationPreferences } from '../../representation/RepresentationPreferences';
 import type { ResponseDescription } from '../response/ResponseDescription';
 
 export interface ErrorHandlerArgs {
   error: Error;
+  request?: HttpRequest;
   preferences: RepresentationPreferences;
 }
 

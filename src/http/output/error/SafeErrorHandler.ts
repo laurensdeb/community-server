@@ -8,6 +8,7 @@ import { RepresentationMetadata } from '../../representation/RepresentationMetad
 import type { ResponseDescription } from '../response/ResponseDescription';
 import type { ErrorHandlerArgs } from './ErrorHandler';
 import { ErrorHandler } from './ErrorHandler';
+import type { ErrorMetadataCollector } from './metadata/ErrorMetadataCollector';
 
 /**
  * Returns a simple text description of an error.
@@ -18,11 +19,14 @@ export class SafeErrorHandler extends ErrorHandler {
 
   private readonly errorHandler: ErrorHandler;
   private readonly showStackTrace: boolean;
+  private readonly metadataCollector: ErrorMetadataCollector;
 
-  public constructor(errorHandler: ErrorHandler, showStackTrace = false) {
+  public constructor(errorHandler: ErrorHandler, metadataCollector: ErrorMetadataCollector,
+    showStackTrace = false) {
     super();
     this.errorHandler = errorHandler;
     this.showStackTrace = showStackTrace;
+    this.metadataCollector = metadataCollector;
   }
 
   public async handle(input: ErrorHandlerArgs): Promise<ResponseDescription> {
@@ -31,10 +35,13 @@ export class SafeErrorHandler extends ErrorHandler {
     } catch (error: unknown) {
       this.logger.debug(`Recovering from error handler failure: ${createErrorMessage(error)}`);
     }
-    const { error } = input;
+    const { error, request } = input;
     const statusCode = getStatusCode(error);
     const metadata = new RepresentationMetadata('text/plain');
     metadata.add(HTTP.terms.statusCodeNumber, toLiteral(statusCode, XSD.terms.integer));
+    if (request) {
+      await this.metadataCollector.handleSafe({ metadata, request });
+    }
 
     const text = typeof error.stack === 'string' && this.showStackTrace ?
       `${error.stack}\n` :

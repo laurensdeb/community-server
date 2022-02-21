@@ -67,13 +67,18 @@ export const ACL = createUriAndTermNamespace('http://www.w3.org/ns/auth/acl#',
 
   'Write',
   'Read',
+  'Update',
   'Append',
+  'Create',
+  'Delete',
   'Control',
 );
 
 export const AUTH = createUriAndTermNamespace('urn:solid:auth:',
   'userMode',
   'publicMode',
+  'ticketNeeds',
+  'ticketSubject',
 );
 
 export const DC = createUriAndTermNamespace('http://purl.org/dc/terms/',

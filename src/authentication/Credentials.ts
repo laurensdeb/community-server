@@ -1,8 +1,12 @@
+import type { AccessMode, ResourceIdentifier } from '..';
+
 /**
  * Credentials identifying an entity accessing or owning data.
  */
 export interface Credential {
   webId?: string;
+  resource?: ResourceIdentifier;
+  modes?: Set<AccessMode>;
 }
 
 /**
@@ -11,6 +15,7 @@ export interface Credential {
 export enum CredentialGroup {
   public = 'public',
   agent = 'agent',
+  ticket = 'ticket',
 }
 
 /**

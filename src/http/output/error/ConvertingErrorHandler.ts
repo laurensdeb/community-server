@@ -12,6 +12,7 @@ import { RepresentationMetadata } from '../../representation/RepresentationMetad
 import type { ResponseDescription } from '../response/ResponseDescription';
 import type { ErrorHandlerArgs } from './ErrorHandler';
 import { ErrorHandler } from './ErrorHandler';
+import type { ErrorMetadataCollector } from './metadata/ErrorMetadataCollector';
 
 // Used by internal helper function
 type PreparedArguments = {
@@ -26,10 +27,13 @@ type PreparedArguments = {
 export class ConvertingErrorHandler extends ErrorHandler {
   private readonly converter: RepresentationConverter;
   private readonly showStackTrace: boolean;
+  private readonly metadataCollector: ErrorMetadataCollector;
 
-  public constructor(converter: RepresentationConverter, showStackTrace = false) {
+  public constructor(converter: RepresentationConverter, metadataCollector: ErrorMetadataCollector,
+    showStackTrace = false) {
     super();
     this.converter = converter;
+    this.metadataCollector = metadataCollector;
     this.showStackTrace = showStackTrace;
   }
 
@@ -51,6 +55,10 @@ export class ConvertingErrorHandler extends ErrorHandler {
     const { statusCode, conversionArgs } = this.prepareArguments(input);
 
     const converted = await this.converter.handleSafe(conversionArgs);
+
+    if (input.request) {
+      await this.metadataCollector.handleSafe({ metadata: converted.metadata, request: input.request });
+    }
 
     return this.createResponse(statusCode, converted);
   }

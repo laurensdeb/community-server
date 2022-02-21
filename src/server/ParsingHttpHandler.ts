@@ -1,5 +1,6 @@
 import type { RequestParser } from '../http/input/RequestParser';
 import type { OperationMetadataCollector } from '../http/ldp/metadata/OperationMetadataCollector';
+import type { Operation } from '../http/Operation';
 import type { ErrorHandler } from '../http/output/error/ErrorHandler';
 import type { ResponseDescription } from '../http/output/response/ResponseDescription';
 import type { ResponseWriter } from '../http/output/ResponseWriter';
@@ -59,9 +60,10 @@ export class ParsingHttpHandler extends HttpHandler {
   public async handle({ request, response }: HttpHandlerInput): Promise<void> {
     let result: ResponseDescription | undefined;
     let preferences: RepresentationPreferences = { type: { 'text/plain': 1 }};
+    let operation: Operation | undefined;
 
     try {
-      const operation = await this.requestParser.handleSafe(request);
+      operation = await this.requestParser.handleSafe(request);
       ({ preferences } = operation);
       result = await this.operationHandler.handleSafe({ operation, request, response });
 
@@ -72,7 +74,7 @@ export class ParsingHttpHandler extends HttpHandler {
       this.logger.verbose(`Parsed ${operation.method} operation on ${operation.target.path}`);
     } catch (error: unknown) {
       assertError(error);
-      result = await this.errorHandler.handleSafe({ error, preferences });
+      result = await this.errorHandler.handleSafe({ error, request, preferences });
     }
 
     if (result) {

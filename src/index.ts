@@ -88,6 +88,10 @@ export * from './http/output/error/ConvertingErrorHandler';
 export * from './http/output/error/ErrorHandler';
 export * from './http/output/error/SafeErrorHandler';
 
+// HTTP/Output/Error/Metadata
+export * from './http/output/error/metadata/ErrorMetadataCollector';
+export * from './http/output/error/metadata/TicketMetadataCollector';
+
 // HTTP/Output/Metadata
 export * from './http/output/metadata/ConstantMetadataWriter';
 export * from './http/output/metadata/LinkRelMetadataWriter';
@@ -96,6 +100,7 @@ export * from './http/output/metadata/MetadataWriter';
 export * from './http/output/metadata/ModifiedMetadataWriter';
 export * from './http/output/metadata/WacAllowMetadataWriter';
 export * from './http/output/metadata/WwwAuthMetadataWriter';
+export * from './http/output/metadata/TicketWwwAuthMetadataWriter';
 
 // HTTP/Output/Response
 export * from './http/output/response/CreatedResponseDescription';

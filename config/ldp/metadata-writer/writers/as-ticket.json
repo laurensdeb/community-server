@@ -1,0 +1,12 @@
+{
+  "@context": "https://linkedsoftwaredependencies.org/bundles/npm/@solid/community-server/^2.0.0/components/context.jsonld",
+  "@graph": [
+    {
+      "comment": "Returns the UMA ticket in case of an unauthorized request.",
+      "@id": "urn:solid-server:default:MetadataWriter_TicketWwwAuth",
+      "@type": "TicketWwwAuthMetadataWriter",
+      "args_asUrl": "http://localhost:4000/",
+      "args_baseUrl": { "@id": "urn:solid-server:default:variable:baseUrl" }
+    }
+  ]
+}
