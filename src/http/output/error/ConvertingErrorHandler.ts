@@ -27,10 +27,10 @@ type PreparedArguments = {
 export class ConvertingErrorHandler extends ErrorHandler {
   private readonly converter: RepresentationConverter;
   private readonly showStackTrace: boolean;
-  private readonly metadataCollector: ErrorMetadataCollector;
+  private readonly metadataCollector: ErrorMetadataCollector | undefined;
 
-  public constructor(converter: RepresentationConverter, metadataCollector: ErrorMetadataCollector,
-    showStackTrace = false) {
+  public constructor(converter: RepresentationConverter,
+    showStackTrace = false, metadataCollector?: ErrorMetadataCollector) {
     super();
     this.converter = converter;
     this.metadataCollector = metadataCollector;
@@ -56,7 +56,7 @@ export class ConvertingErrorHandler extends ErrorHandler {
 
     const converted = await this.converter.handleSafe(conversionArgs);
 
-    if (input.request) {
+    if (this.metadataCollector && input.request) {
       await this.metadataCollector.handleSafe({ metadata: converted.metadata, request: input.request });
     }
 

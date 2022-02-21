@@ -19,10 +19,10 @@ export class SafeErrorHandler extends ErrorHandler {
 
   private readonly errorHandler: ErrorHandler;
   private readonly showStackTrace: boolean;
-  private readonly metadataCollector: ErrorMetadataCollector;
+  private readonly metadataCollector: ErrorMetadataCollector | undefined;
 
-  public constructor(errorHandler: ErrorHandler, metadataCollector: ErrorMetadataCollector,
-    showStackTrace = false) {
+  public constructor(errorHandler: ErrorHandler,
+    showStackTrace = false, metadataCollector?: ErrorMetadataCollector) {
     super();
     this.errorHandler = errorHandler;
     this.showStackTrace = showStackTrace;
@@ -39,7 +39,7 @@ export class SafeErrorHandler extends ErrorHandler {
     const statusCode = getStatusCode(error);
     const metadata = new RepresentationMetadata('text/plain');
     metadata.add(HTTP.terms.statusCodeNumber, toLiteral(statusCode, XSD.terms.integer));
-    if (request) {
+    if (this.metadataCollector && request) {
       await this.metadataCollector.handleSafe({ metadata, request });
     }
 

@@ -79,7 +79,7 @@ export class IdentityTestState {
     await this.session.login({
       redirectUrl: this.redirectUrl,
       oidcIssuer: this.oidcIssuer,
-      handleRedirect(data): void {
+      handleRedirect(data: string): void {
         nextUrl = data;
       },
     });
