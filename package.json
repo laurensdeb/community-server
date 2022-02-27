@@ -51,8 +51,9 @@
     "jest": "jest --coverageReporters text-summary --",
     "lint": "eslint . --cache --ignore-path .gitignore",
     "prepare": "npm run build",
-    "start": "node ./bin/server.js --loggingLevel=\"debug\"",
+    "start": "node ./bin/server.js",
     "start:file": "node ./bin/server.js -c config/file.json -f ./data",
+    "start:uma": "node ./bin/server.js -c config/authorization-service.json --loggingLevel=\"debug\" -f ./data",
     "test": "npm run test:ts && npm run jest",
     "test:deploy": "test/deploy/validate-package.sh",
     "test:ts": "tsc -p test --noEmit",
@@ -61,7 +62,7 @@
     "test:watch": "jest --coverageReporters none --watch test/unit",
     "validate": "componentsjs-compile-config urn:solid-server:default:Initializer -c config/default.json -f > /dev/null",
     "version": "manual-git-changelog onversion",
-    "watch": "nodemon --watch \"dist/**/*.js\" --exec npm start"
+    "watch": "nodemon --watch \"dist/**/*.js\" --exec npm run start:uma"
   },
   "husky": {
     "hooks": {

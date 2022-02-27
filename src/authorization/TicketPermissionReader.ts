@@ -1,5 +1,5 @@
-import { PermissionReader } from '..';
 import type { PermissionReaderInput } from './PermissionReader';
+import { PermissionReader } from './PermissionReader';
 import type { PermissionSet } from './permissions/Permissions';
 import { AccessMode } from './permissions/Permissions';
 

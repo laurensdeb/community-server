@@ -7,6 +7,7 @@ export * from './authentication/PublicCredentialsExtractor';
 export * from './authentication/UnionCredentialsExtractor';
 export * from './authentication/UnsecureConstantCredentialsExtractor';
 export * from './authentication/UnsecureWebIdExtractor';
+export * from './authentication/UmaTicketExtractor';
 
 // Authorization/Access
 export * from './authorization/access/AccessChecker';
@@ -30,6 +31,7 @@ export * from './authorization/PermissionBasedAuthorizer';
 export * from './authorization/PermissionReader';
 export * from './authorization/UnionPermissionReader';
 export * from './authorization/WebAclReader';
+export * from './authorization/TicketPermissionReader';
 
 // HTTP/Auxiliary
 export * from './http/auxiliary/AuxiliaryIdentifierStrategy';

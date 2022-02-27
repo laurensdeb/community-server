@@ -1,5 +1,6 @@
 import * as jose from 'jose';
 import type { Term } from 'rdf-js';
+import { v4 } from 'uuid';
 import { getLoggerFor } from '../../../logging/LogUtil';
 import type { HttpResponse } from '../../../server/HttpResponse';
 import { addHeader } from '../../../util/HeaderUtil';
@@ -50,6 +51,7 @@ export class TicketWwwAuthMetadataWriter extends MetadataWriter {
           .setIssuedAt(Date.now())
           .setIssuer(this.baseUrl)
           .setProtectedHeader({ alg: 'HS256' })
+          .setJti(v4())
           .sign(secret);
 
         addHeader(input.response, 'WWW-Authenticate', `UMA realm="${this.baseUrl}",` +
